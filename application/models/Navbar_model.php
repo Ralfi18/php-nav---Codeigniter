@@ -5,15 +5,13 @@
 */
 class Navbar_model extends CI_Model
 {
-	
-	function __construct()
+	public function getPages( $pageID = null )
 	{
-		# code...
-	}
-
-	public function getPages()
-	{
-		$query = $this->db->get('nav');
+		if (!$pageID) {
+			$query = $this->db->get('nav');
+		} else {
+			$query = $this->db->get_where('nav', ['parentID' => $pageID]);
+		}
 		return $query->result();
 	}
 }

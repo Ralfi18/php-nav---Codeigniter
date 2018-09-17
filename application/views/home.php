@@ -1,67 +1,40 @@
+<?php 
+	function subPages($page) {
+		$CI =& get_instance();
+		$CI->load->model('navbar_model');
+		$newPages = $CI->navbar_model->getPages($page);
+		
+		// print_r($newPages);
+
+		foreach ($newPages AS $newPage) {
+				echo '<ul><li ><a class="'.$newPage->level.'" href="'.$newPage->path.'">' . $newPage->name;
+				if ($newPage->isParent) {
+					subPages($newPage->ID);
+				}
+				echo '</a></li></ul>';
+		}
+	}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>Navbar</title>
 	<style>
-		nav ul {
-
-		}
-
-		ul li {
-/*			list-style: none;
-			display: inline;*/
-		}
-
-		ul li.menu-level-1 {
-			
-		}
-		ul li.menu-level-2 {
-			
-		}
 	</style>
 </head>
 <body>
 	<nav>
 		<ul>
-
-			<?php 
-				function subPages($page, $i = 1, $prevPage = null) {
-
-					$CI =& get_instance();
-					$CI->load->model('navbar_model');
-					$newPages = $CI->navbar_model->getPages();
-					$index = $i;
-
-					$openTag = '<ul class="ul-'.$index.'">';
-					$closingTag = '</ul>';
-
-					echo $openTag;
-						foreach($newPages as $newPage ) {
-							if( $newPage->parentID == $page->ID ) {
-								echo "<li class='menu-level-" . $newPage->level ."' >" . $newPage->name;
-								//print_r($newPage) ;
-								if ($newPage->isParent) {
-									subPages($newPage, $i + 1);
-								}
-								echo "</li>";
-							}
-						}
-					echo $closingTag;
-				}
-			?>
-
 			<?php 
 				foreach ($pages as $page) {
-					if ($page->parentID == null && $page->level == null) {
-						echo "<li class='menu-level-1' >" . $page->name;
+					if ($page->level === NULL) {
+						echo "<li class='menu-level-1' >" . '<a href="' .$page->path. '">' . $page->name;
+						if ($page->isParent) {
+							subPages($page->ID);
+						}
+						echo "</a></li>";
 					}
-					
-					if($page->isParent) {
-						subPages($page);
-					}
-
-					echo "</li>";
 				}
 			?>
 		</ul>
