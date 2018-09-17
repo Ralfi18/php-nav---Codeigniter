@@ -3,15 +3,13 @@
 		$CI =& get_instance();
 		$CI->load->model('navbar_model');
 		$newPages = $CI->navbar_model->getPages($page);
-		
-		// print_r($newPages);
 
 		foreach ($newPages AS $newPage) {
-				echo '<ul><li ><a class="'.$newPage->level.'" href="'.$newPage->path.'">' . $newPage->name;
+				echo '<ul><li ><a class="'.$newPage->level.'" href="'.$newPage->path.'">' . $newPage->name .' </a>';
 				if ($newPage->isParent) {
 					subPages($newPage->ID);
 				}
-				echo '</a></li></ul>';
+				echo '</li></ul>';
 		}
 	}
 ?>
@@ -29,11 +27,11 @@
 			<?php 
 				foreach ($pages as $page) {
 					if ($page->level === NULL) {
-						echo "<li class='menu-level-1' >" . '<a href="' .$page->path. '">' . $page->name;
+						echo "<li class='menu-level-1' >" . '<a href="' .$page->path. '">' . $page->name . '</a>';
 						if ($page->isParent) {
 							subPages($page->ID);
 						}
-						echo "</a></li>";
+						echo "</li>";
 					}
 				}
 			?>
